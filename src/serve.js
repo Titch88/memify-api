@@ -1,7 +1,6 @@
 const express = require("express");
-const sizeOf = require("image-size");
 import { readdir } from "fs/promises";
-const Jimp = require("jimp");
+import { buildMeme, getTemplate } from "./utils";
 const app = express();
 const port = 3000;
 
@@ -10,42 +9,22 @@ const templateFolder = "./templates";
 app.get("/:template/:first/:second?", async (req, res) => {
   const { template, first, second } = req.params;
   const files = await readdir(templateFolder);
-  console.log(files);
-  const file = files[0];
-  const path = `${templateFolder}/${file}`;
-  const dimensions = sizeOf(path);
-  const image = await Jimp.read(path);
-  const font = await Jimp.loadFont(Jimp.FONT_SANS_64_WHITE);
-  const imageText = await image
-    .print(
-      font,
-      0,
-      0,
-      {
-        text: first,
-        alignmentX: Jimp.HORIZONTAL_ALIGN_CENTER
-      },
-      dimensions.width,
-      dimensions.height
-    )
-    .print(
-      font,
-      0,
-      90,
-      {
-        text: second,
-        alignmentX: Jimp.HORIZONTAL_ALIGN_CENTER
-      },
-      dimensions.width,
-      dimensions.height
-    );
-  console.log(imageText);
-  const buffer = await imageText.getBufferAsync(Jimp.MIME_PNG);
+
+  const file = getTemplate(template, files);
+  if (!file) {
+    res.status(400).end();
+  }
+  const imagePath = `${templateFolder}/${file}`;
+  const imageBuffer = await buildMeme({
+    imagePath,
+    firstText: first,
+    secondText: second
+  });
   res.writeHead(200, {
     "Content-Type": "image/png",
-    "Content-Length": buffer.length
+    "Content-Length": imageBuffer.length
   });
-  res.end(buffer);
+  res.end(imageBuffer);
 });
 
 app.listen(port, () => {
