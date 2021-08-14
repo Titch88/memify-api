@@ -1,5 +1,6 @@
-const sizeOf = require("image-size");
 const Jimp = require("jimp");
+
+const DEFAULT_WIDTH = 500;
 
 export const getTemplate = (templateString, files) => {
   // todo
@@ -8,11 +9,11 @@ export const getTemplate = (templateString, files) => {
 };
 
 export const buildMeme = async ({ imagePath, firstText, secondText }) => {
-  const dimensions = sizeOf(imagePath);
   const image = await Jimp.read(imagePath);
   const font = await Jimp.loadFont(Jimp.FONT_SANS_64_WHITE);
-  console.log(secondText);
-  const imageText = await image
+
+  const resizedImage = image.resize(DEFAULT_WIDTH, Jimp.AUTO);
+  const imageText = await resizedImage
     .print(
       font,
       0,
@@ -21,8 +22,7 @@ export const buildMeme = async ({ imagePath, firstText, secondText }) => {
         text: firstText,
         alignmentX: Jimp.HORIZONTAL_ALIGN_CENTER
       },
-      dimensions.width,
-      dimensions.height
+      DEFAULT_WIDTH
     )
     .print(
       font,
@@ -32,8 +32,7 @@ export const buildMeme = async ({ imagePath, firstText, secondText }) => {
         text: secondText || " ",
         alignmentX: Jimp.HORIZONTAL_ALIGN_CENTER
       },
-      dimensions.width,
-      dimensions.height
+      DEFAULT_WIDTH
     );
 
   const buffer = await imageText.getBufferAsync(Jimp.MIME_PNG);
