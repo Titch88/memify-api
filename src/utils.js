@@ -22,7 +22,7 @@ export const buildMeme = async ({ foundTemplate, firstText, secondText }) => {
   const image = await Jimp.read(foundTemplate.file);
   const font = await Jimp.loadFont(foundTemplate.font);
 
-  const resizedImage = image.resize(DEFAULT_WIDTH, Jimp.AUTO);
+  const resizedImage = image.resize(2 * DEFAULT_WIDTH, Jimp.AUTO);
   const imageText = await resizedImage
     .print(
       font,
