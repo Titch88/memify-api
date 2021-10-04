@@ -6,19 +6,18 @@ const port = 3000;
 
 const templateFolder = "./templates";
 
-app.get("/:template/:first/:second?", async (req, res) => {
-  const { template, first, second } = req.params;
+app.get("/foutre/:nick", async (req, res) => {
+  const { nick } = req.params;
   const files = await readdir(templateFolder);
 
-  const file = getTemplate(template, files);
+  const file = getTemplate(files);
   if (!file) {
     res.status(400).end();
   }
   const imagePath = `${templateFolder}/${file}`;
   const imageBuffer = await buildMeme({
     imagePath,
-    firstText: first,
-    secondText: second
+    nick
   });
   res.writeHead(200, {
     "Content-Type": "image/png",
