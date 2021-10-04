@@ -2,7 +2,7 @@ const express = require("express");
 import { readdir } from "fs/promises";
 import { buildMeme, getTemplate } from "./utils";
 const app = express();
-const port = 3000;
+const port = 3042;
 
 const templateFolder = "./templates";
 

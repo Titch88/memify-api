@@ -14,11 +14,10 @@ export const buildMeme = async ({ imagePath, nick }) => {
   const resizedImage = image.resize(DEFAULT_WIDTH, Jimp.AUTO);
   const imageText = await resizedImage.print(
     font,
-    135,
+    340,
     248,
     {
-      text: nick,
-      alignmentX: Jimp.HORIZONTAL_ALIGN_CENTER
+      text: nick
     },
     DEFAULT_WIDTH
   );
