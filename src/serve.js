@@ -1,7 +1,7 @@
 const express = require("express");
 import { buildMeme, getTemplate } from "./utils";
 const app = express();
-const port = 3000;
+const port = 3042;
 
 app.get("/:template/:first/:second?", async (req, res) => {
   const { template, first, second } = req.params;
@@ -23,5 +23,5 @@ app.get("/:template/:first/:second?", async (req, res) => {
 });
 
 app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`);
+  console.log(`zé bardi http://localhost:${port}`);
 });
