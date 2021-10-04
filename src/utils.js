@@ -1,36 +1,44 @@
 const Jimp = require("jimp");
+import templates from "../templates/templates.json";
 
 const DEFAULT_WIDTH = 500;
+const templateFolder = "./templates";
 
-export const getTemplate = (templateString, files) => {
+export const getTemplate = async templateString => {
+  const found = templates.find(({ adress }) => adress === templateString);
+  console.log(found);
   // todo
-  console.log(files);
-  return files[0];
+  return found
+    ? {
+        ...found,
+        file: `${templateFolder}/${found.file}`,
+        font: `fonts/${found.font}`
+      }
+    : null;
 };
 
-export const buildMeme = async ({ imagePath, firstText, secondText }) => {
-  const image = await Jimp.read(imagePath);
-  const font = await Jimp.loadFont(Jimp.FONT_SANS_64_WHITE);
+export const buildMeme = async ({ foundTemplate, firstText, secondText }) => {
+  console.log(foundTemplate);
+  const image = await Jimp.read(foundTemplate.file);
+  const font = await Jimp.loadFont(foundTemplate.font);
 
   const resizedImage = image.resize(DEFAULT_WIDTH, Jimp.AUTO);
   const imageText = await resizedImage
     .print(
       font,
-      0,
-      0,
+      foundTemplate.texts[0]["X"],
+      foundTemplate.texts[0]["Y"],
       {
-        text: firstText,
-        alignmentX: Jimp.HORIZONTAL_ALIGN_CENTER
+        text: firstText.toUpperCase()
       },
       DEFAULT_WIDTH
     )
     .print(
       font,
-      0,
-      90,
+      foundTemplate.texts[1] ? foundTemplate.texts[1]["X"] : 0,
+      foundTemplate.texts[1] ? foundTemplate.texts[1]["Y"] : 0,
       {
-        text: secondText || " ",
-        alignmentX: Jimp.HORIZONTAL_ALIGN_CENTER
+        text: secondText || " "
       },
       DEFAULT_WIDTH
     );
