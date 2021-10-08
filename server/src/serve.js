@@ -1,13 +1,17 @@
+import templates from "../templates/templates.json";
 import { buildMeme, getTemplate } from "./utils";
 import express from "express";
 import path from "path";
+import cors from "cors";
 const app = express();
 const port = 3042;
 
 app.use(express.static(path.join(__dirname, "..", "..", "build")));
 
-app.get("/", (req, res, next) => {
-  res.sendFile(path.join(__dirname, "..", "..", "build", "index.html"));
+app.use(cors());
+
+app.get("/templates", (req, res) => {
+  res.json(templates);
 });
 
 app.get("/:template/:first/:second?", async (req, res) => {
@@ -29,6 +33,10 @@ app.get("/:template/:first/:second?", async (req, res) => {
     });
     res.end(imageBuffer);
   }
+});
+
+app.get("/", (req, res, next) => {
+  res.sendFile(path.join(__dirname, "..", "..", "build", "index.html"));
 });
 
 app.listen(port, () => {

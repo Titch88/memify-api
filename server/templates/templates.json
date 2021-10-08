@@ -1,5 +1,7 @@
 [
   {
+    "description": "envoie quelqu'un se faire foutre",
+    "args": "/<pseudo>",
     "file": "foutre.jpg",
     "adress": "foutre",
     "font": "IMPACT.32.BLACK.fnt",
