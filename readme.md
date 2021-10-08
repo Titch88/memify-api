@@ -12,5 +12,5 @@ Ce projet a pour objectif de construire une API permettant de generer des memes 
 
 ## contribuer
 
-- ouvrir une pull request en updatant le dossier templates (il faut ajouter une image et mettre à jour le fichier templates.json)
+- ouvrir une pull request en updatant le dossier server/templates (il faut ajouter une image et mettre à jour le fichier templates.json)
 - patienter.
