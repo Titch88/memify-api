@@ -1,12 +1,11 @@
 const Jimp = require("jimp");
 import templates from "../templates/templates.json";
 
-const DEFAULT_WIDTH = 500;
+const DEFAULT_WIDTH = 1000;
 const templateFolder = "./templates";
 
 export const getTemplate = async templateString => {
   const found = templates.find(({ adress }) => adress === templateString);
-  console.log(found);
   // todo
   return found
     ? {
@@ -22,7 +21,7 @@ export const buildMeme = async ({ foundTemplate, firstText, secondText }) => {
   const image = await Jimp.read(foundTemplate.file);
   const font = await Jimp.loadFont(foundTemplate.font);
 
-  const resizedImage = image.resize(2 * DEFAULT_WIDTH, Jimp.AUTO);
+  const resizedImage = image.resize(DEFAULT_WIDTH, Jimp.AUTO);
   const imageText = await resizedImage
     .print(
       font,

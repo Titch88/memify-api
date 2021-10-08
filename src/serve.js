@@ -8,18 +8,20 @@ app.get("/:template/:first/:second?", async (req, res) => {
 
   const foundTemplate = await getTemplate(template);
   if (!foundTemplate) {
-    res.status(400).end();
+    res.status(404);
+    res.end();
+  } else {
+    const imageBuffer = await buildMeme({
+      foundTemplate,
+      firstText: first,
+      secondText: second
+    });
+    res.writeHead(200, {
+      "Content-Type": "image/png",
+      "Content-Length": imageBuffer.length
+    });
+    res.end(imageBuffer);
   }
-  const imageBuffer = await buildMeme({
-    foundTemplate,
-    firstText: first,
-    secondText: second
-  });
-  res.writeHead(200, {
-    "Content-Type": "image/png",
-    "Content-Length": imageBuffer.length
-  });
-  res.end(imageBuffer);
 });
 
 app.listen(port, () => {
