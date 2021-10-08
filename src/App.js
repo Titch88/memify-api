@@ -20,10 +20,13 @@ function App() {
     <div className="App">
       <Typography>Endpoints disponibles</Typography>
       <List>
-        {templateList.map(({ adress, args }) => (
+        {templateList.map(({ adress, args, description }) => (
           <a target="_blank" rel="noreferrer" href={`${adress}${args}`}>
             <ListItem button>
-              <ListItemText secondary={`/${adress}${args}`}></ListItemText>
+              <ListItemText
+                primary={description}
+                secondary={`/${adress}${args}`}
+              ></ListItemText>
             </ListItem>
           </a>
         ))}
