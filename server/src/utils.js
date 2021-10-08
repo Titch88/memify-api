@@ -1,5 +1,5 @@
-const Jimp = require("jimp");
 import templates from "../templates/templates.json";
+const Jimp = require("jimp");
 
 const DEFAULT_WIDTH = 1000;
 const templateFolder = "./templates";

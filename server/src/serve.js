@@ -1,7 +1,14 @@
-const express = require("express");
 import { buildMeme, getTemplate } from "./utils";
+import express from "express";
+import path from "path";
 const app = express();
 const port = 3042;
+
+app.use(express.static(path.join(__dirname, "..", "..", "build")));
+
+app.get("/", (req, res, next) => {
+  res.sendFile(path.join(__dirname, "..", "..", "build", "index.html"));
+});
 
 app.get("/:template/:first/:second?", async (req, res) => {
   const { template, first, second } = req.params;
